@@ -1,11 +1,1138 @@
 @prefix : <https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl> .
+ @prefix owl: <http://www.w3.org/2002/07/owl#> . 
+ @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+ @prefix xml: <http://www.w3.org/XML/1998/namespace> .
+ @prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+ @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+ @prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
 
-<https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl> rdf:type owl:Ontology .
+
+ <https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl> rdf:type owl:Ontology .
+
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#basedIn
+:basedIn rdf:type owl:ObjectProperty ;
+         owl:inverseOf :hostsOrganization ;
+         owl:propertyChainAxiom ( :workedAt :locatedIn ) ;
+         rdfs:domain :Organization ;
+         rdfs:range :City .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#birthPlaceOf
+:birthPlaceOf rdf:type owl:ObjectProperty ;
+              owl:inverseOf :bornIn ;
+              rdfs:domain :City ;
+              rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#bornIn
+:bornIn rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
+        rdfs:domain :Person ;
+        rdfs:range :City .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#certifies
+:certifies rdf:type owl:ObjectProperty ;
+           owl:inverseOf :hasCertification ;
+           rdfs:domain :Certification ;
+           rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#collaboratedWith
+:collaboratedWith rdf:type owl:ObjectProperty ,
+                           owl:SymmetricProperty ,
+						   owl:IrreflexiveProperty ;
+                  rdfs:domain :Person ;
+                  rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#completedProject
+:completedProject rdf:type owl:ObjectProperty ;
+                  owl:inverseOf :projectDevelopedBy ;
+                  rdfs:domain :Person ;
+                  rdfs:range :Project .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#developedUsing
+:developedUsing rdf:type owl:ObjectProperty ;
+                owl:inverseOf :usedInProject ;
+                rdfs:domain :Project ;
+                rdfs:range :Technology .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#educatedIn
+:educatedIn rdf:type owl:ObjectProperty ;
+            owl:inverseOf :educates ;
+            rdfs:domain :Person ;
+            rdfs:range :School .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#educates
+:educates rdf:type owl:ObjectProperty ;
+          rdfs:domain :School ;
+          rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasCertification
+:hasCertification rdf:type owl:ObjectProperty ;
+                  rdfs:domain :Person ;
+                  rdfs:range :Certification .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasDigitalResource
+:hasDigitalResource rdf:type owl:ObjectProperty ;
+                    owl:inverseOf :isDigitalResourceOf ;
+                    rdfs:domain :Person ;
+                    rdfs:range :DigitalResource .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasEmployee
+:hasEmployee rdf:type owl:ObjectProperty ;
+             owl:inverseOf :workedAt ;
+             rdfs:domain :Organization ;
+             rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasHobby
+:hasHobby rdf:type owl:ObjectProperty ;
+          owl:inverseOf :hobbyOf ;
+          rdfs:domain :Person ;
+          rdfs:range :Hobby .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasMember
+:hasMember rdf:type owl:ObjectProperty ;
+           owl:inverseOf :memberOf ;
+           rdfs:domain :Organization ;
+           rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasParticipant
+:hasParticipant rdf:type owl:ObjectProperty ;
+                owl:inverseOf :participatedIn ;
+                rdfs:domain :VolunteerActivity ;
+                rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasRecommendation
+:hasRecommendation rdf:type owl:ObjectProperty ;
+                   owl:inverseOf :recommends ;
+                   rdfs:domain :Person ;
+                   rdfs:range :LetterOfRecommendation .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasSkill
+:hasSkill rdf:type owl:ObjectProperty ;
+          owl:inverseOf :skillOf ;
+          rdfs:domain :Person ;
+          rdfs:range :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasTimeInterval
+:hasTimeInterval rdf:type owl:ObjectProperty ;
+                 owl:inverseOf :timeIntervalOf ;
+                 rdfs:domain owl:Thing ;
+                 rdfs:range :TimeInterval .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#heldPosition
+:heldPosition rdf:type owl:ObjectProperty ;
+              owl:inverseOf :positionHeldBy ;
+              rdfs:domain :Person ;
+              rdfs:range :JobTitle .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hobbyOf
+:hobbyOf rdf:type owl:ObjectProperty ;
+         rdfs:domain :Hobby ;
+         rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hostsOrganization
+:hostsOrganization rdf:type owl:ObjectProperty ;
+                   rdfs:domain :City ;
+                   rdfs:range :Organization .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#isDigitalResourceOf
+:isDigitalResourceOf rdf:type owl:ObjectProperty ;
+                     rdfs:domain :DigitalResource ;
+                     rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#issuedBy
+:issuedBy rdf:type owl:ObjectProperty ;
+          owl:inverseOf :issues ;
+          rdfs:domain :Certification ;
+          rdfs:range :Organization .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#issues
+:issues rdf:type owl:ObjectProperty ;
+        rdfs:domain :Organization ;
+        rdfs:range :Certification .
+		
+		
+		###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#locatedIn
+		:locatedIn rdf:type owl:ObjectProperty ;
+           rdfs:domain :Organization ;
+           rdfs:range :City .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#memberOf
+:memberOf rdf:type owl:ObjectProperty ;
+          rdfs:domain :Person ;
+          rdfs:range :Organization .
+		  
+		  
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#organizedBy	  
+:organizedBy rdf:type owl:ObjectProperty ;
+             rdfs:domain :VolunteerActivity ;
+             rdfs:range :Organization .
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#organizes 
+:organizes rdf:type owl:ObjectProperty ;
+           owl:inverseOf :organizedBy ;
+           rdfs:domain :Organization ;
+           rdfs:range :VolunteerActivity .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#participatedIn
+:participatedIn rdf:type owl:ObjectProperty ;
+                rdfs:domain :Person ;
+                rdfs:range :VolunteerActivity .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#positionHeldBy
+:positionHeldBy rdf:type owl:ObjectProperty ;
+                rdfs:domain :JobTitle ;
+                rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#projectDevelopedBy
+:projectDevelopedBy rdf:type owl:ObjectProperty ;
+                    rdfs:domain :Project ;
+                    rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#recommends
+:recommends rdf:type owl:ObjectProperty ;
+            rdfs:domain :LetterOfRecommendation ;
+            rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#skillOf
+:skillOf rdf:type owl:ObjectProperty ;
+         rdfs:domain :Skill ;
+         rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#speaks
+:speaks rdf:type owl:ObjectProperty ;
+        owl:inverseOf :spokenBy ;
+        rdfs:domain :Person ;
+        rdfs:range :Language .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#spokenBy
+:spokenBy rdf:type owl:ObjectProperty ;
+          rdfs:domain :Language ;
+          rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#supervisedBy
+:supervisedBy rdf:type owl:ObjectProperty ,
+                         owl:TransitiveProperty ; 
+              owl:inverseOf :supervises ;
+              rdfs:domain :Person ;
+              rdfs:range :Person .
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#supervises
+:supervises rdf:type owl:ObjectProperty ;
+            rdfs:domain :Person ;
+            rdfs:range :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#timeIntervalOf
+:timeIntervalOf rdf:type owl:ObjectProperty ;
+                rdfs:domain :TimeInterval ;
+				rdfs:range  owl:Thing .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#usedInProject
+:usedInProject rdf:type owl:ObjectProperty ;
+               rdfs:domain :Technology ;
+               rdfs:range :Project .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#usesTechnology
+:usesTechnology rdf:type owl:ObjectProperty ;
+owl:propertyChainAxiom (:completedProject :developedUsing) ;
+                rdfs:domain :Person ;
+                rdfs:range :Technology .
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#workedAt
+:workedAt rdf:type owl:ObjectProperty ;
+          rdfs:domain :Person ;
+          rdfs:range :Organization .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+
+
+  ### https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#activityName
+:activityName rdf:type owl:DatatypeProperty ;
+              rdfs:domain :VolunteerActivity ;
+              rdfs:range xsd:string .
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#certDate
+:certDate rdf:type owl:DatatypeProperty ;
+          rdfs:domain :Certification ;
+          rdfs:range xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#cityName
+:cityName rdf:type owl:DatatypeProperty ;
+          rdfs:domain :City ;
+          rdfs:range xsd:string .
+		  
+		
+
+
+
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#description
+:description rdf:type owl:DatatypeProperty ;
+             rdfs:domain :Certification ,
+                         :Project ,
+                         :VolunteerActivity ;
+             rdfs:range xsd:string .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#email
+:email rdf:type owl:DatatypeProperty ;
+       rdfs:domain :DigitalResource ,
+                   :Person ;
+       rdfs:range xsd:string .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#endDate
+:endDate rdf:type owl:DatatypeProperty ;
+         rdfs:domain [ rdf:type owl:Class ;
+                       owl:unionOf ( :HighSchool
+                                     :Project
+                                     :University
+                                     :VolunteerActivity
+                                   )
+                     ] ;
+         rdfs:range xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#fullName
+:fullName rdf:type owl:DatatypeProperty ;
+          rdfs:domain :Person ;
+          rdfs:range xsd:string .
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasStudentID		
+:hasStudentID rdf:type owl:DatatypeProperty ,
+                       owl:InverseFunctionalProperty ;
+              rdfs:domain :Person ;
+              rdfs:range xsd:string .	
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#hasPrimaryEmail
+:hasPrimaryEmail rdf:type owl:DatatypeProperty ,
+                          owl:FunctionalProperty ;
+                 rdfs:domain :Person ;
+                 rdfs:range xsd:string .
+
+	  
+		  
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#gpa
+:gpa rdf:type owl:DatatypeProperty ;
+     rdfs:domain :University ;
+     rdfs:range xsd:decimal .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#graduationDate
+:graduationDate rdf:type owl:DatatypeProperty ;
+                rdfs:domain :School ,
+                            :University ;
+                rdfs:range xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#jobTitleName
+:jobTitleName rdf:type owl:DatatypeProperty ;
+              rdfs:domain :JobTitle ;
+              rdfs:range xsd:string .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#languageName
+:languageName rdf:type owl:DatatypeProperty ;
+              rdfs:domain :Language ;
+              rdfs:range xsd:string .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#organizationName
+:organizationName rdf:type owl:DatatypeProperty ;
+                  rdfs:domain :Organization ;
+                  rdfs:range xsd:string .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#phoneNumber
+:phoneNumber rdf:type owl:DatatypeProperty ;
+             rdfs:domain :Person ;
+             rdfs:range xsd:string .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#proficiencyLevel
+:proficiencyLevel rdf:type owl:DatatypeProperty ;
+                  rdfs:domain :Language ;
+                  rdfs:range xsd:string .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#projectTitle
+:projectTitle rdf:type owl:DatatypeProperty ;
+              rdfs:domain :Project ;
+              rdfs:range xsd:string .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#recommendationText
+:recommendationText rdf:type owl:DatatypeProperty ;
+                    rdfs:domain :LetterOfRecommendation ;
+                    rdfs:range xsd:string .
+					
+					 ### https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#role
+:role rdf:type owl:DatatypeProperty ;
+      rdfs:domain :VolunteerActivity ;
+      rdfs:range xsd:string .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#startDate
+:startDate rdf:type owl:DatatypeProperty ;
+           rdfs:domain [ rdf:type owl:Class ;
+                         owl:unionOf ( :HighSchool
+                                       :Project
+                                       :University
+                                       :VolunteerActivity
+                                     )
+                       ] ;
+           rdfs:range xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#technologyName
+:technologyName rdf:type owl:DatatypeProperty ;
+                rdfs:domain :Technology ;
+                rdfs:range xsd:string .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#url
+:url rdf:type owl:DatatypeProperty ;
+     rdfs:domain :DigitalResource ;
+     rdfs:range xsd:anyURI .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Activity
+:Activity rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Certification
+:Certification rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Church
+:Church rdf:type owl:Class ;
+        rdfs:subClassOf :Organization .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#City
+:City rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Club
+:Club rdf:type owl:Class ;
+      rdfs:subClassOf :Activity .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Company
+:Company rdf:type owl:Class ;
+         rdfs:subClassOf :Organization .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#DigitalResource
+:DigitalResource rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Document
+:Document rdf:type owl:Class ;
+          rdfs:subClassOf :DigitalResource .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#EmailAccount
+:EmailAccount rdf:type owl:Class ;
+              rdfs:subClassOf :DigitalResource .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#GitHubProfile
+:GitHubProfile rdf:type owl:Class ;
+               rdfs:subClassOf :DigitalResource .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#HighSchool
+:HighSchool rdf:type owl:Class ;
+            rdfs:subClassOf :School .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Hobby
+:Hobby rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#JobTitle
+:JobTitle rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Language
+:Language rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#LetterOfRecommendation
+:LetterOfRecommendation rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#LinkedInProfile
+:LinkedInProfile rdf:type owl:Class ;
+                 rdfs:subClassOf :DigitalResource .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Organization
+:Organization rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Person
+:Person rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#PortfolioSite
+:PortfolioSite rdf:type owl:Class ;
+               rdfs:subClassOf :DigitalResource .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Project
+:Project rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#School
+:School rdf:type owl:Class ;
+        rdfs:subClassOf :Organization .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Skill
+:Skill rdf:type owl:Class .
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#SkilledPerson
+:SkilledPerson rdf:type owl:Class ;
+               owl:equivalentClass [
+                   rdf:type owl:Restriction ;
+                   owl:onProperty :hasSkill ;
+                   owl:someValuesFrom :Skill
+               ] .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Technology
+:Technology rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#TimeInterval
+:TimeInterval rdf:type owl:Class .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#University
+:University rdf:type owl:Class ;
+            rdfs:subClassOf :School .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#VolunteerActivity
+:VolunteerActivity rdf:type owl:Class ;
+                   rdfs:subClassOf :Activity .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#ALXAfrica
+:ALXAfrica rdf:type owl:NamedIndividual ,
+                    :Organization ;
+           :basedIn :AddisAbaba ;
+           :issues :ALXProfessionalFoundations ;
+           :organizationName "ALX Africa" .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#ALXProfessionalFoundations
+:ALXProfessionalFoundations rdf:type owl:NamedIndividual ,
+                                     :Certification ;
+                            :issuedBy :ALXAfrica .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Adaptability
+:Adaptability rdf:type owl:NamedIndividual ,
+                       :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#AddisAbaba
+:AddisAbaba rdf:type owl:NamedIndividual ,
+                     :City ;
+            owl:sameAs dbpedia:Addis_Ababa ;
+            :hostsOrganization :AddiswayTechnology ;
+            :cityName "Addis Ababa" .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#AddisWay_TimeInterval
+:AddisWay_TimeInterval rdf:type owl:NamedIndividual ,
+                                :TimeInterval ;
+                       :startDate "2023-05-01T00:00:00"^^xsd:dateTime ;
+					   :endDate "2023-09-01T00:00:00"^^xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#AddiswayTechnology
+:AddiswayTechnology rdf:type owl:NamedIndividual ,
+                             :Company ;
+                    :basedIn :AddisAbaba ;
+                    :hasEmployee :NahomMesfinKifle ;
+                    :hasTimeInterval :AddisWay_TimeInterval .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#AgeGenderPredictionProject
+:AgeGenderPredictionProject rdf:type owl:NamedIndividual ,
+                                     :Project ;
+                            :developedUsing :Keras ,
+                                            :NumPy ,
+                                            :Pandas ,
+                                            :PyTorch ,
+                                            :Python ,
+                                            :TensorFlow ;
+                            :projectDevelopedBy :NahomMesfinKifle .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Amharic
+
+				  :Amharic rdf:type owl:NamedIndividual ,
+                  :Language ;
+         owl:sameAs dbpedia:Amharic ;
+         :languageName "Amharic" .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#AnalyticalMindset
+:AnalyticalMindset rdf:type owl:NamedIndividual ,
+                            :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#BScSE_TimeInterval
+:BScSE_TimeInterval rdf:type owl:NamedIndividual ,
+                             :TimeInterval ;
+                    :endDate "2024-07-01T00:00:00"^^xsd:dateTime ;
+                    :startDate "2019-10-01T00:00:00"^^xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#CSS3
+:CSS3 rdf:type owl:NamedIndividual ,
+               :Technology .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Chess
+:Chess rdf:type owl:NamedIndividual ,
+                :Hobby .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#CivicClubCertificate
+:CivicClubCertificate rdf:type owl:NamedIndividual ,
+                               :Certification ;
+                      :issuedBy :CivicEthicalEducationClub .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#CivicEthicalClub_TimeInterval
+:CivicEthicalClub_TimeInterval rdf:type owl:NamedIndividual ,
+                                        :TimeInterval ;
+                               :startDate "2018-06-30T00:00:00"^^xsd:dateTime ;
+                               :endDate "2017-09-01T00:00:00"^^xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#CivicEthicalEducationClub
+:CivicEthicalEducationClub rdf:type owl:NamedIndividual ,
+                                    :Club ;
+                          
+                           :hasTimeInterval :CivicEthicalClub_TimeInterval ;
+                           :organizationName "Civic and Ethical Education Club" .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#ContinuousLearning
+:ContinuousLearning rdf:type owl:NamedIndividual ,
+                             :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#DatasetConsistency
+:DatasetConsistency rdf:type owl:NamedIndividual ,
+                             :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#DeanTemesgen
+:DeanTemesgen rdf:type owl:NamedIndividual ,
+                       :Person .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#DebreBerhan
+:DebreBerhan rdf:type owl:NamedIndividual ,
+                      :City ;
+             owl:sameAs dbpedia:Debre_Berhan ;
+             :hostsOrganization :DebreBerhanUniversity ;
+             :cityName "Debre Berhan" .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#DebreBerhanEvangelicalFellowship
+:DebreBerhanEvangelicalFellowship rdf:type owl:NamedIndividual ,
+                                           :Church ;
+                                  :basedIn :DebreBerhan ;
+                                  :hasTimeInterval :DebreBerhanEvangelicalFellowship_TimeInterval .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#DebreBerhanEvangelicalFellowship_TimeInterval
+:DebreBerhanEvangelicalFellowship_TimeInterval rdf:type owl:NamedIndividual ,
+                                                        :TimeInterval ;
+                                               :endDate "2024-07-31T00:00:00"^^xsd:dateTime ;
+                                               :startDate "2019-09-01T00:00:00"^^xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#DebreBerhanUniversity
+:DebreBerhanUniversity rdf:type owl:NamedIndividual ,
+                                :University ;
+                       owl:sameAs dbpedia:Debre_Berhan_University ;
+                       :basedIn :DebreBerhan ;
+                       :hasTimeInterval :BScSE_TimeInterval .
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#DeepLearning
+:DeepLearning rdf:type owl:NamedIndividual ,
+                       :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#DetailOriented
+:DetailOriented rdf:type owl:NamedIndividual ,
+                         :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#EHELGebeya
+:EHELGebeya rdf:type owl:NamedIndividual ,
+                     :Project ;
+            :developedUsing :CSS3 ,
+                            :GitHub ,
+                            :HTML5 ,
+                            :JavaScript ,
+                            :MySQL ,
+                            :RESTAPI ,
+                            :React ;
+            :projectDevelopedBy :NahomMesfinKifle .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#English
+:English rdf:type owl:NamedIndividual ,
+                  :Language ;
+         owl:sameAs dbpedia:English_language ;
+         :languageName "English" .
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Football
+:Football rdf:type owl:NamedIndividual ,
+                   :Hobby .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#FountainOfKnowledge
+:FountainOfKnowledge rdf:type owl:NamedIndividual ,
+                              :HighSchool ;
+                     :basedIn :AddisAbaba ;
+                     :hasTimeInterval :HighSchool_TimeInterval .
+
+
+
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#FreeCodeCamp
+:FreeCodeCamp rdf:type owl:NamedIndividual ,
+                       :Organization ;
+              owl:sameAs dbpedia:FreeCodeCamp ;
+              :basedIn :AddisAbaba ;
+              :organizationName "FreeCodeCamp" .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#FreeCodeCampRWD
+:FreeCodeCampRWD rdf:type owl:NamedIndividual ,
+                          :Certification ;
+                 :issuedBy :FreeCodeCamp .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#FrontendDeveloper
+:FrontendDeveloper rdf:type owl:NamedIndividual ,
+                            :JobTitle .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#GeopoliticsHistory
+:GeopoliticsHistory rdf:type owl:NamedIndividual ,
+                             :Hobby .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Git
+:Git rdf:type owl:NamedIndividual ,
+              :Technology .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#GitHub
+:GitHub rdf:type owl:NamedIndividual ,
+                 :Technology ;
+        owl:sameAs dbpedia:GitHub .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#HTML5
+:HTML5 rdf:type owl:NamedIndividual ,
+                :Technology .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#HighSchool_TimeInterval
+:HighSchool_TimeInterval rdf:type owl:NamedIndividual ,
+                                  :TimeInterval ;
+                         :endDate "2019-07-01T00:00:00"^^xsd:dateTime ;
+                         :startDate "2015-09-01T00:00:00"^^xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#HimSolutions
+:HimSolutions rdf:type owl:NamedIndividual ,
+                       :Company ;
+              :basedIn :AddisAbaba ;
+              :hasTimeInterval :HimSolutions_TimeInterval .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#HimSolutions_TimeInterval
+:HimSolutions_TimeInterval rdf:type owl:NamedIndividual ,
+                                    :TimeInterval ;
+                           :endDate "2024-12-01T00:00:00"^^xsd:dateTime ;
+                           :startDate "2024-07-01T00:00:00"^^xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#I4UInitiative
+:I4UInitiative rdf:type owl:NamedIndividual ,
+                        :VolunteerActivity ;
+               :basedIn :DebreBerhan;
+               :hasTimeInterval :I4U_TimeInterval ;
+               :activityName "I4U Fellowship Initiative" ;
+               :organizedBy :I4UOrganization .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#I4UOrganization
+:I4UOrganization rdf:type owl:NamedIndividual ,
+                          :Organization .
+               
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#I4U_TimeInterval
+:I4U_TimeInterval rdf:type owl:NamedIndividual ,
+                           :TimeInterval ;
+                  :endDate "2024-07-31T00:00:00"^^xsd:dateTime ;
+                  :startDate "2021-09-01T00:00:00"^^xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Intern
+:Intern rdf:type owl:NamedIndividual ,
+                 :JobTitle .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Java
+:Java rdf:type owl:NamedIndividual ,
+               :Technology ;
+      owl:sameAs dbpedia:Java .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#JavaScript
+:JavaScript rdf:type owl:NamedIndividual ,
+                     :Technology ;
+            owl:sameAs dbpedia:JavaScript .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Jyväskylä
+:Jyväskylä rdf:type owl:NamedIndividual ,
+                    :City ;
+           owl:sameAs dbpedia:Jyväskylä ;
+           :hostsOrganization :UniversityJyväskylä ;
+           :cityName "Jyväskylä" .
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Keras
+:Keras rdf:type owl:NamedIndividual ,
+                :Technology .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#LetterAddisWay
+:LetterAddisWay rdf:type owl:NamedIndividual ,
+                         :LetterOfRecommendation .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#LetterDBU
+:LetterDBU rdf:type owl:NamedIndividual ,
+                    :LetterOfRecommendation .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#MScAI_TimeInterval
+:MScAI_TimeInterval rdf:type owl:NamedIndividual ,
+                             :TimeInterval ;
+                    :endDate "2027-08-01T00:00:00"^^xsd:dateTime ;
+                    :startDate "2025-08-01T00:00:00"^^xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#MinilikBelachew
+:MinilikBelachew rdf:type owl:NamedIndividual ,
+                          :Person ;
+                 :collaboratedWith :NahomMesfinKifle ;
+				 :hasStudentID "DBU/12/3444" ;
+                 :supervisedBy :DeanTemesgen .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#ModelTrainingEvaluation
+:ModelTrainingEvaluation rdf:type owl:NamedIndividual ,
+                                  :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#MulatAid
+:MulatAid rdf:type owl:NamedIndividual ,
+                   :VolunteerActivity ;
+          :hasTimeInterval :MulatAid_TimeInterval ;
+          :activityName "MulatAid Community Support Program" ;
+          :organizedBy :MulatAidOrganization ;
+          :role "Volunteer Community Worker" .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#MulatAidOrganization
+:MulatAidOrganization rdf:type owl:NamedIndividual ,
+                               :Organization ;
+                      :basedIn :AddisAbaba .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#MulatAid_TimeInterval
+:MulatAid_TimeInterval rdf:type owl:NamedIndividual ,
+                                :TimeInterval ;
+                       :endDate "2018-08-30T00:00:00"^^xsd:dateTime ;
+                       :startDate "2018-07-01T00:00:00"^^xsd:dateTime .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#MySQL
+:MySQL rdf:type owl:NamedIndividual ,
+                :Technology ;
+       owl:sameAs dbpedia:MySQL .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#NahomGitHub
+:NahomGitHub rdf:type owl:NamedIndividual ,
+                      :DigitalResource ;
+             :url "https://github.com/nahom-mesfin" .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#NahomLinkedIn
+:NahomLinkedIn rdf:type owl:NamedIndividual ,
+                        :DigitalResource ;
+               :url "https://www.linkedin.com/in/nahommesfin/" .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#NahomMesfinKifle
+:NahomMesfinKifle rdf:type owl:NamedIndividual ,
+                           :Person ;
+                  :bornIn :AddisAbaba ;
+                  :collaboratedWith :MinilikBelachew ,
+                                    :NathnaelTemesgen ;
+                  :completedProject :AgeGenderPredictionProject ,
+                                    :EHELGebeya ,
+                                    :TPMSProject ,
+                                    :YeneFlowers ;
+                  :educatedIn :DebreBerhanUniversity ,
+                              :FountainOfKnowledge,
+                              :UniversityJyväskylä ;
+                  :hasCertification :ALXProfessionalFoundations ,
+                                    :CivicClubCertificate ,
+                                    :FreeCodeCampRWD ;
+                  :hasDigitalResource :NahomGitHub ,
+                                      :NahomLinkedIn ;
+                  :hasHobby :Chess ,
+                            :Football ,
+                            :GeopoliticsHistory ;
+				  :hasPrimaryEmail "nahom.m.kifle@student.jyu.fi" ;			
+                  :hasRecommendation :LetterAddisWay ,
+                                     :LetterDBU ;
+				  :hasStudentID "DBU/12/3334" ;
+                  :hasSkill :Adaptability ,
+                            :AnalyticalMindset ,
+                            :ContinuousLearning ,
+                            :DatasetConsistency ,
+                            :DetailOriented ,
+                            :ModelTrainingEvaluation ,
+                            :QualityAssurance ,
+                            :StructuredLabeling ,
+                            :Teamwork ;
+                  :heldPosition :FrontendDeveloper ,
+                                :Intern ;
+                  :memberOf :DebreBerhanEvangelicalFellowship ;
+                  :participatedIn :CivicEthicalEducationClub ,
+                                  :I4UInitiative ,
+                                  :MulatAid ;
+                  :speaks :Amharic ,
+                          :English ;
+                  :supervisedBy :DeanTemesgen ;
+                  :usesTechnology :CSS3 ,
+                                  :Git ,
+                                  :GitHub ,
+                                  :HTML5 ,
+                                  :Java ,
+                                  :JavaScript ,
+                                  :Keras ,
+                                  :MySQL ,
+                                  :NumPy ,
+                                  :Pandas ,
+                                  :PostgreSQL ,
+                                  :PyTorch ,
+                                  :Python ,
+                                  :RESTAPI ,
+                                  :React ,
+                                  :SOAPWebServices ,
+                                  :TensorFlow ;
+                  :workedAt :AddiswayTechnology ,
+                            :HimSolutions ;
+                  :email "nahommesfin116@gmail.com" ;
+                  :fullName "Nahom Mesfin Kifle" ;
+                  :phoneNumber "+251935303319" .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#NathnaelTemesgen
+:NathnaelTemesgen rdf:type owl:NamedIndividual ,
+                           :Person ;
+                  :collaboratedWith :NahomMesfinKifle ;
+                  :educatedIn :DebreBerhanUniversity ;
+                  :supervisedBy :NahomMesfinKifle .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#NumPy
+:NumPy rdf:type owl:NamedIndividual ,
+                :Technology .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Pandas
+:Pandas rdf:type owl:NamedIndividual ,
+                 :Technology .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#PostgreSQL
+:PostgreSQL rdf:type owl:NamedIndividual ,
+                     :Technology .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#PyTorch
+:PyTorch rdf:type owl:NamedIndividual ,
+                  :Technology ;
+         owl:sameAs dbpedia:PyTorch .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Python
+:Python rdf:type owl:NamedIndividual ,
+                 :Technology ;
+        owl:sameAs dbpedia:Python .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#QualityAssurance
+:QualityAssurance rdf:type owl:NamedIndividual ,
+                           :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#RESTAPI
+:RESTAPI rdf:type owl:NamedIndividual ,
+                  :Technology .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#React
+:React rdf:type owl:NamedIndividual ,
+                :Technology ;
+       owl:sameAs dbpedia:React .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#SOAPWebServices
+:SOAPWebServices rdf:type owl:NamedIndividual ,
+                          :Technology .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#StructuredLabeling
+:StructuredLabeling rdf:type owl:NamedIndividual ,
+                             :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#TPMSProject
+:TPMSProject rdf:type owl:NamedIndividual ,
+                      :Project ;
+             :developedUsing :CSS3 ,
+                             :GitHub ,
+                             :HTML5 ,
+                             :JavaScript ,
+                             :MySQL ,
+                             :RESTAPI ,
+                             :React ;
+             :projectDevelopedBy :NahomMesfinKifle .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#Teamwork
+:Teamwork rdf:type owl:NamedIndividual ,
+                   :Skill .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#TensorFlow
+:TensorFlow rdf:type owl:NamedIndividual ,
+                     :Technology ;
+            owl:sameAs dbpedia:TensorFlow .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#UniversityJyväskylä
+:UniversityJyväskylä rdf:type owl:NamedIndividual ,
+                              :University ;
+                     owl:sameAs dbpedia:University_of_Jyväskylä ;
+                     :basedIn :Jyväskylä ;
+                     :hasTimeInterval :MScAI_TimeInterval .
+
+
+###  https://nahom-mesfin.github.io/semantic-web-cv/Cv-ontology.owl#YeneFlowers
+:YeneFlowers rdf:type owl:NamedIndividual ,
+                      :Project ;
+             :developedUsing :CSS3 ,
+                             :GitHub ,
+                             :HTML5 ,
+                             :JavaScript ,
+                             :MySQL ,
+                             :RESTAPI ,
+                             :React ;
+             :projectDevelopedBy :NahomMesfinKifle .
+
+
+
+
+
 
 ###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
